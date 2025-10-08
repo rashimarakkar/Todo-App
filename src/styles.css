@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #6f42c1;
+    --accent-color: #20c997;
+    --bg-color: #f8f9fa;
+    --text-dark: #343a40;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    min-height: 100vh;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+}

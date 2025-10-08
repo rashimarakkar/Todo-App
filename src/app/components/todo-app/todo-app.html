@@ -1,0 +1,82 @@
+<div class="todo-container">
+  <div class="todo-header"><h1>My Todo List</h1></div>
+  <form #todoForm="ngForm" class="todo-form row g-2" (ngSubmit)="submitForm(todoForm)">
+    <div class="col-9">
+      <input type="text" 
+      name="todo" 
+      [(ngModel)]="todoItem.name" 
+      class="form-control"
+       placeholder="Enter new task..." 
+       required
+       #todo="ngModel"
+       />
+    </div>
+    <div class="col-md-3 d-grid">
+      <button type="button" (click)="onTextChange()" class="btn btn-light">Search</button>
+    </div>
+   
+    @if(todo.invalid && todo.touched){
+      <div >
+     @if ( todo.errors?.['required']) {
+       <small >Task is required</small>
+   }
+     </div>
+    } 
+   <div class="row mt-3">
+    <div class="section-area">
+   <div class="">
+<button type="submit" class="btn btn-success btn-small me-2">Add  Task</button>
+<button type="button" (click)="todoForm.resetForm()" class="btn btn-success btn-small me-2">Clear</button>
+
+   </div>
+   <div>
+     <select class="form-select filter-select mt-3" (change)="onFilterChange($event)">
+    <option selected>Filter by status</option>
+    <option value="all">All</option>
+    <option value="completed">Completed</option>
+    <option value="pending">Pending</option>
+    <option value="hold">On Hold</option>
+  </select>
+   </div>   
+ 
+    </div>
+   
+
+   </div> 
+    
+</form>
+ 
+  <ul class="task-list mt-4">
+    @if(isFilterRecordPresent()){
+        @for (item of filteredTodoList(); track $index) {
+    <li class="task-item">
+      
+    <div>
+    <div>
+   
+      <span>{{item.name}}</span> &nbsp;&nbsp;<span [class]="'task-status status-' +item.status" >{{item.status}}</span>
+    </div>  
+   
+    <div class="mt-2">
+     <i class="bi bi-trash text-danger cursor-pointer" (click)="deleteTask(item.id)"></i> &nbsp;
+      <small>{{item.date | date}}</small>
+    </div>
+  </div>
+     
+      
+    <select (change)="statusChange($event, item)" class="form-select filter-select select-width">
+  <option selected disabled>Change Status</option>
+  <option value="completed" [hidden]="item.status === 'completed'">Completed</option>
+  <option value="hold" [hidden]="item.status === 'hold'">On Hold</option>
+</select>
+
+    </li>
+     } 
+    }
+     @else {
+       <li class="task-item">
+      <span>No task found with search filter</span> 
+    </li>
+     }
+  </ul>
+</div>
